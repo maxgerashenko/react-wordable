@@ -5,6 +5,7 @@ import { common_words as commonWords } from './data/common_words.ts';
 import { letters as lettersStats } from './data/letters.ts';
 import { getGlobalIndex, getLocalIndex, focusNextEl } from './utils/utils.ts';
 import { LETTERS_COUNT } from './utils/consts.ts'
+import {Options} from './views/options/options.tsx';
 
 function App() {
   console.clear();
@@ -226,17 +227,7 @@ function App() {
           )
         )}
       </div>
-
-      <h1>{wordsList.length}</h1>
-      <div className="word-box">
-        {wordsList.map((word) => (
-          <div className="word" key={word}>
-            <button onClick={() => onWordClick(word)}>
-              {word.toUpperCase()} <h6>{getTotalOptions(word)}</h6>
-            </button>
-          </div>
-        ))}
-      </div>
+      <Options options={wordsList}/>
     </>
   );
 }
