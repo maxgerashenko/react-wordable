@@ -1,10 +1,7 @@
-import { useState, ChangeEvent, useCallback, useEffect } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+import { useState, useCallback, useEffect } from 'react';
 import './App.css';
 import { words as wordsData } from './data/words.ts';
 import { common_words as commonWords } from './data/common_words.ts';
-import { debounce, throttle } from 'lodash';
 import { letters as lettersStats } from './data/letters.ts';
 
 const LETTERS_COUNT = 5;
@@ -69,9 +66,7 @@ function App() {
         }
       }
 
-      setStates(newStates, () => {
-        alert('!!!!!!!!!!!!!!!');
-      });
+      setStates(newStates);
     }
   );
 
