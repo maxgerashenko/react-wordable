@@ -1,11 +1,10 @@
-import { useState, useCallback, useEffect, ChangeEvent } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import './App.css';
 import { words as wordsData } from './data/words.ts';
 import { common_words as commonWords } from './data/common_words.ts';
 import { letters as lettersStats } from './data/letters.ts';
 import { getGlobalIndex, getLocalIndex, focusNextEl } from './utils/utils.ts';
 import { LETTERS_COUNT } from './utils/consts.ts'
-import React from 'react';
 
 function App() {
   console.clear();
@@ -20,42 +19,46 @@ function App() {
     Array(6).fill(null).fill(Array(LETTERS_COUNT).fill(0))
   );
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const lettersStatsMap = {};
+  const lettersStatsMap: { [key: string]: number }
+    = {};
   for (let [letter, options] of lettersStatsArray)
     lettersStatsMap[letter] = Number(options);
 
   const updateState = useCallback(
     (wIndex: number, lIndex: number, newState?: number) => {
-      let letter = words[wIndex][lIndex];
-      let newStates = states.map((word, wI) =>
-        word.map((oldState, lI) =>
-          newState == null
-            ? wI > 0 && states[wI - 1][lI] === 2
-              ? 2
-              : oldState
-            : (words[wI][lI] === letter && oldState === 0) ||
-              (wIndex == wI && lIndex == lI)
-              ? newState
-              : oldState
-        )
-      );
+      let newStates = [...states];
+      if(newState === null) return;
+      newStates[wIndex]![lIndex]! = newState;
+      // let letter = words[wIndex][lIndex];
+      // let newStates = states.map((word, wI) =>
+      //   word.map((oldState, lI) =>
+      //     newState == null
+      //       ? wI > 0 && states[wI - 1][lI] === 2
+      //         ? 2
+      //         : oldState
+      //       : (words[wI][lI] === letter && oldState === 0) ||
+      //         (wIndex == wI && lIndex == lI)
+      //         ? newState
+      //         : oldState
+      //   )
+      // );
 
-      let matchMap = {};
-      for (let j = 0; j < words.length; j++)
-        for (let i = 0; i < words[i].length; i++) {
-          if (newStates[j][i] !== 2) continue;
-          matchMap[words[j][i]] = [j, i];
-        }
+      // let matchMap: { [key: string]: number[] } = {};
+      // for (let j = 0; j < words.length; j++)
+      //   for (let i = 0; i < words[i].length; i++) {
+      //     if (newStates[j][i] !== 2) continue;
+      //     matchMap[words[j][i]] = [j, i];
+      //   }
 
-      let newWords = [...words];
-      for (let letter of Object.keys(matchMap)) {
-        for (let j = 0; j < words.length; j++) {
-          if (j <= matchMap[letter][0] || states[j][i] !== 2) continue;
+      // let newWords = [...words];
+      // for (let letter of Object.keys(matchMap)) {
+      //   for (let j = 0; j < words.length; j++) {
+      //     if (j <= matchMap[letter][0] || states[j][i] !== 2) continue;
 
-          newStates[j][matchMap[letter][1]] === 2;
-          newWords[j][matchMap[letter][1]] = letter;
-        }
-      }
+      //     newStates[j][matchMap[letter][1]] === 2;
+      //     newWords[j][matchMap[letter][1]] = letter;
+      //   }
+      // }
 
       setStates(newStates);
     }
@@ -108,7 +111,7 @@ function App() {
     setWordsList(filtered);
   };
 
-  const statusMap = {
+  const statusMap: { [key: number]: string } = {
     0: 'status-empty',
     1: 'status-exist',
     2: 'status-match',
@@ -130,7 +133,7 @@ function App() {
     updateFilter();
   }, [states]);
 
-  const onInputChange = (event: ChangeEvent<HTMLInputElement>, wIndex: number, lIndex: number) => {
+  const onInputChange = (event: InputEvent, wIndex: number, lIndex: number) => {
     let input = getInputValue(event);
 
     let newWords = [...words];
@@ -138,7 +141,7 @@ function App() {
     newWords[wIndex][lIndex] = input;
     setWords(newWords);
     (event.target as HTMLInputElement).blur();
-    updateState(wIndex, lIndex);
+    // updateState(wIndex, lIndex);
   };
 
   const handleClick = useCallback((wIndex: number, lIndex: number) => {
@@ -147,16 +150,16 @@ function App() {
     updateFilter();
   }, []);
 
-  const onWordClick = (event: MouseEvent, word: string) => {
+  const onWordClick = (word: string) => {
     let start =
       words.reduce(
-        (start, word, index) =>
+        (start: number | null, word: string, index: number) =>
           word[0] === '' && start == null ? index : start,
         null
       ) ?? 4;
 
     let newWords = [...words];
-    newWords[start] = word.split('');
+    newWords[start as unknown as number] = word.split('');
 
     setWords(newWords);
     setActiveIndex((index) => index + 1);
@@ -204,7 +207,7 @@ function App() {
             (wIndex > 0 && words[wIndex - 1][4] === '') ? (
             ''
           ) : (
-            <div key={word} className="letters-container">
+            <div key={wIndex} className="letters-container">
               {word.map((letter, lIndex) => (
                 <div
                   key={'' + lIndex}
@@ -214,8 +217,8 @@ function App() {
                   <input
                     maxLength={1}
                     value={letter.toUpperCase()}
-                    onFocus={(event) => onInputFocus(getGlobalIndex(wIndex, lIndex))}
-                    onChange={(event) => onInputChange(event, wIndex, lIndex)}
+                    onFocus={() => onInputFocus(getGlobalIndex(wIndex, lIndex))}
+                    onChange={(event) => onInputChange(event as unknown as InputEvent, wIndex, lIndex)}
                   />
                 </div>
               ))}
@@ -226,9 +229,9 @@ function App() {
 
       <h1>{wordsList.length}</h1>
       <div className="word-box">
-        {wordsList.map((word, index) => (
+        {wordsList.map((word) => (
           <div className="word" key={word}>
-            <button onClick={(event) => onWordClick(event, word)}>
+            <button onClick={() => onWordClick(word)}>
               {word.toUpperCase()} <h6>{getTotalOptions(word)}</h6>
             </button>
           </div>
