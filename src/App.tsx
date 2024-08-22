@@ -3,8 +3,8 @@ import './App.css';
 import { words as wordsData } from './data/words.ts';
 import { common_words as commonWords } from './data/common_words.ts';
 import { letters as lettersStats } from './data/letters.ts';
-
-const LETTERS_COUNT = 5;
+import { getGlobalIndex, getLocalIndex, focusNextEl } from './utils/utils.ts';
+import {LETTERS_COUNT} from './utils/consts.ts'
 
 function App() {
   console.clear();
@@ -18,20 +18,10 @@ function App() {
   const [states, setStates] = useState<number[][]>(
     Array(6).fill(null).fill(Array(LETTERS_COUNT).fill(0))
   );
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const lettersStatsMap = {};
   for (let [letter, options] of lettersStatsArray)
     lettersStatsMap[letter] = Number(options);
-
-  const getGlobalIndex = (wIndex: number, lIndex: number) =>
-    wIndex * LETTERS_COUNT + lIndex;
-  const getLocalIndex = (index: number): number[] => [
-    ~~(index / LETTERS_COUNT),
-    index % LETTERS_COUNT,
-  ];
-
-  const focusNextEl = (index: number) => {
-    document.getElementsByTagName('input')[index + 1].focus();
-  };
 
   const updateState = useCallback(
     (wIndex: number, lIndex: number, newState?: number) => {
@@ -51,14 +41,14 @@ function App() {
 
       let matchMap = {};
       for (let j = 0; j < words.length; j++)
-        for (let i = 0; i < words[i].lenght; i++) {
+        for (let i = 0; i < words[i].length; i++) {
           if (newStates[j][i] !== 2) continue;
           matchMap[words[j][i]] = [j, i];
         }
 
       let newWords = [...words];
       for (let letter of Object.keys(matchMap)) {
-        for (let j = 0; j < words.lenght; j++) {
+        for (let j = 0; j < words.length; j++) {
           if (j <= matchMap[letter][0] || states[j][i] !== 2) continue;
 
           newStates[j][matchMap[letter][1]] === 2;
@@ -68,12 +58,12 @@ function App() {
 
       setStates(newStates);
     }
-  );
+    , []);
 
   const filterByStatus = (
     filtered: string[],
     letter: string,
-    letterStatus: string,
+    letterStatus: number,
     lIndex: number
   ) =>
     letter.trim() === ''
@@ -90,7 +80,7 @@ function App() {
           : // letterStatus === 2
           filtered.filter((word) => word[lIndex] === letter);
 
-  const getFiltered = (words: sting[]) => {
+  const getFiltered = (words: string[][]) => {
     let allLetters = words
       .reduce((letters, word) => [...letters, ...word], [])
       .filter((el) => el != '');
@@ -114,9 +104,7 @@ function App() {
     filtered.sort((a, b) => getTotalOptions(b) - getTotalOptions(a));
     filtered.sort((a, b) => commonData.indexOf(b) - commonData.indexOf(a));
 
-    setWordsList(filtered, () => {
-      alert('!!!!!!!!!!!!!');
-    });
+    setWordsList(filtered);
   };
 
   const statusMap = {
@@ -127,28 +115,28 @@ function App() {
   const getLetterStatus = (wIndex: number, lIndex: number): string =>
     statusMap[states[wIndex][lIndex]];
 
-  const getInputValue = (event: Event) => {
-    let input = event?.target?.value ?? '';
+  const getInputValue = (event: InputEvent) => {
+    let input = (event.target as HTMLInputElement)?.value ?? '';
     return input.split('').reverse()[0] + '';
   };
 
   useEffect(() => {
-    updateFilter(words);
+    updateFilter();
     focusNextEl(getGlobalIndex(0, 0));
   }, [words]);
 
   useEffect(() => {
-    updateFilter(words);
+    updateFilter();
   }, [states]);
 
-  const onInputChange = (event: Event, wIndex: number, lIndex: number) => {
+  const onInputChange = (event: InputEvent, wIndex: number, lIndex: number) => {
     let input = getInputValue(event);
 
     let newWords = [...words];
     newWords[wIndex] = [...words[wIndex]];
     newWords[wIndex][lIndex] = input;
     setWords(newWords);
-    event.target.blur();
+    (event.target as HTMLInputElement).blur();
     updateState(wIndex, lIndex);
   };
 
@@ -156,7 +144,7 @@ function App() {
     let newState = (states[wIndex][lIndex] + 1) % 3;
     updateState(wIndex, lIndex, newState);
     updateFilter();
-  });
+  }, []);
 
   const onWordClick = (event: Event, word: string) => {
     let start =
@@ -213,7 +201,7 @@ function App() {
                   onDoubleClick={() => handleClick(wIndex, lIndex)}
                 >
                   <input
-                    maxlength="1"
+                    maxLength="1"
                     autoFocus={lIndex === 0}
                     value={letter.toUpperCase()}
                     onChange={(event) => onInputChange(event, wIndex, lIndex)}

@@ -1,0 +1,1 @@
+export const LETTERS_COUNT = 5;
