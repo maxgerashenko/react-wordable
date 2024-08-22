@@ -29,7 +29,7 @@ function App() {
     index % LETTERS_COUNT,
   ];
 
-  const focusNextEl = (index) => {
+  const focusNextEl = (index: number) => {
     document.getElementsByTagName('input')[index + 1].focus();
   };
 
@@ -44,8 +44,8 @@ function App() {
               : oldState
             : (words[wI][lI] === letter && oldState === 0) ||
               (wIndex == wI && lIndex == lI)
-            ? newState
-            : oldState
+              ? newState
+              : oldState
         )
       );
 
@@ -79,16 +79,16 @@ function App() {
     letter.trim() === ''
       ? filtered
       : letterStatus === 0
-      ? filtered.filter(
+        ? filtered.filter(
           (word) => !word.includes(letter)
           // || (word.includes(letter) && word[lIndex] != letter)
         )
-      : letterStatus === 1
-      ? filtered.filter(
-          (word) => word.includes(letter) && word[lIndex] !== letter
-        )
-      : // letterStatus === 2
-        filtered.filter((word) => word[lIndex] === letter);
+        : letterStatus === 1
+          ? filtered.filter(
+            (word) => word.includes(letter) && word[lIndex] !== letter
+          )
+          : // letterStatus === 2
+          filtered.filter((word) => word[lIndex] === letter);
 
   const getFiltered = (words: sting[]) => {
     let allLetters = words
@@ -134,8 +134,12 @@ function App() {
 
   useEffect(() => {
     updateFilter(words);
-    console.log(wordsList.length);
-  }, [words, states]);
+    focusNextEl(getGlobalIndex(0, 0));
+  }, [words]);
+
+  useEffect(() => {
+    updateFilter(words);
+  }, [states]);
 
   const onInputChange = (event: Event, wIndex: number, lIndex: number) => {
     let input = getInputValue(event);
@@ -145,7 +149,6 @@ function App() {
     newWords[wIndex][lIndex] = input;
     setWords(newWords);
     event.target.blur();
-    setTimeout(() => focusNextEl(getGlobalIndex(wIndex, lIndex)), 2000);
     updateState(wIndex, lIndex);
   };
 
@@ -199,7 +202,7 @@ function App() {
       <div className="words-container">
         {words.map((word, wIndex) =>
           (wordsList.length <= 1 && word[0] == '') ||
-          (wIndex > 0 && words[wIndex - 1][4] === '') ? (
+            (wIndex > 0 && words[wIndex - 1][4] === '') ? (
             ''
           ) : (
             <div key={word} className="letters-container">
@@ -211,6 +214,7 @@ function App() {
                 >
                   <input
                     maxlength="1"
+                    autoFocus={lIndex === 0}
                     value={letter.toUpperCase()}
                     onChange={(event) => onInputChange(event, wIndex, lIndex)}
                   />
