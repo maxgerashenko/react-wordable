@@ -1,10 +1,11 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, ChangeEvent } from 'react';
 import './App.css';
 import { words as wordsData } from './data/words.ts';
 import { common_words as commonWords } from './data/common_words.ts';
 import { letters as lettersStats } from './data/letters.ts';
 import { getGlobalIndex, getLocalIndex, focusNextEl } from './utils/utils.ts';
-import {LETTERS_COUNT} from './utils/consts.ts'
+import { LETTERS_COUNT } from './utils/consts.ts'
+import React from 'react';
 
 function App() {
   console.clear();
@@ -18,7 +19,7 @@ function App() {
   const [states, setStates] = useState<number[][]>(
     Array(6).fill(null).fill(Array(LETTERS_COUNT).fill(0))
   );
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
   const lettersStatsMap = {};
   for (let [letter, options] of lettersStatsArray)
     lettersStatsMap[letter] = Number(options);
@@ -122,14 +123,14 @@ function App() {
 
   useEffect(() => {
     updateFilter();
-    focusNextEl(getGlobalIndex(0, 0));
+    focusNextEl(activeIndex);
   }, [words]);
 
   useEffect(() => {
     updateFilter();
   }, [states]);
 
-  const onInputChange = (event: InputEvent, wIndex: number, lIndex: number) => {
+  const onInputChange = (event: ChangeEvent<HTMLInputElement>, wIndex: number, lIndex: number) => {
     let input = getInputValue(event);
 
     let newWords = [...words];
@@ -146,7 +147,7 @@ function App() {
     updateFilter();
   }, []);
 
-  const onWordClick = (event: Event, word: string) => {
+  const onWordClick = (event: MouseEvent, word: string) => {
     let start =
       words.reduce(
         (start, word, index) =>
@@ -158,6 +159,7 @@ function App() {
     newWords[start] = word.split('');
 
     setWords(newWords);
+    setActiveIndex((index) => index + 1);
   };
 
   // research
@@ -173,6 +175,15 @@ function App() {
 
   const getTotalOptions = (word: string) =>
     word.split('').reduce((sum, letter) => sum + lettersStatsMap[letter], 0);
+
+  const onInputFocus = (index: number) => {
+    setActiveIndex(index);
+  }
+
+  useEffect(() => {
+    focusNextEl(-1);
+  }, []); // On init only
+
 
   return (
     <>
@@ -201,9 +212,9 @@ function App() {
                   onDoubleClick={() => handleClick(wIndex, lIndex)}
                 >
                   <input
-                    maxLength="1"
-                    autoFocus={lIndex === 0}
+                    maxLength={1}
                     value={letter.toUpperCase()}
+                    onFocus={(event) => onInputFocus(getGlobalIndex(wIndex, lIndex))}
                     onChange={(event) => onInputChange(event, wIndex, lIndex)}
                   />
                 </div>

@@ -9,5 +9,5 @@ export const getLocalIndex = (index: number): number[] => [
 ];
 
 export const focusNextEl = (index: number) => {
-    document.getElementsByTagName('input')[index + 1].focus();
+    document.getElementsByTagName('input')[index + 1]?.focus();
   };
