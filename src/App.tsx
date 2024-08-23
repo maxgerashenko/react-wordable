@@ -201,7 +201,6 @@ function App() {
           />
         </a>
       </div>
-
       <div className="words-container">
         {words.map((word, wIndex) =>
           (wordsList.length <= 1 && word[0] == '') ||
