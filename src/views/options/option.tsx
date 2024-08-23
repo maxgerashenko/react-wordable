@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import './option.css';
-import { LetterStatusContext } from './letterStatusContext';
+import { LetterStatusContext } from './letter_status_context';
 import { getTotalOptions } from '../../utils/utils';
 
 export default function Option({ word }: { word: string }) {

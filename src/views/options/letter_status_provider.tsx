@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { LetterStatusContext } from "./letterStatusContext";
+import { LetterStatusContext } from "./letter_status_context";
 
 
 export default function LetterStatusProvider({ children }) {
