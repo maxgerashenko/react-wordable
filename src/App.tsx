@@ -2,14 +2,13 @@ import { useState, useCallback, useEffect } from 'react';
 import './App.css';
 import { words as wordsData } from './data/words.ts';
 import { common_words as commonWords } from './data/common_words.ts';
-import { letters as lettersStats } from './data/letters.ts';
 import { getGlobalIndex, getLocalIndex, focusNextEl } from './utils/utils.ts';
 import { LETTERS_COUNT } from './utils/consts.ts'
-import {Options} from './views/options/options.tsx';
+import { Options } from './views/options/options.tsx';
+import LetterStatusProvider from './views/options/option_container.tsx';
 
 function App() {
   console.clear();
-  const lettersStatsArray = lettersStats.split('\n').map((el) => el.split(':'));
   const data = wordsData.split('\n');
   const commonData = commonWords.split('\n');
   const [words, setWords] = useState<string[][]>(
@@ -20,15 +19,11 @@ function App() {
     Array(6).fill(null).fill(Array(LETTERS_COUNT).fill(0))
   );
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const lettersStatsMap: { [key: string]: number }
-    = {};
-  for (let [letter, options] of lettersStatsArray)
-    lettersStatsMap[letter] = Number(options);
 
   const updateState = useCallback(
     (wIndex: number, lIndex: number, newState?: number) => {
       let newStates = [...states];
-      if(newState === null) return;
+      if (newState === null) return;
       newStates[wIndex]![lIndex]! = newState;
       // let letter = words[wIndex][lIndex];
       // let newStates = states.map((word, wI) =>
@@ -106,7 +101,7 @@ function App() {
 
   const updateFilter = () => {
     const filtered = getFiltered(words);
-    filtered.sort((a, b) => getTotalOptions(b) - getTotalOptions(a));
+    // filtered.sort((a, b) => getTotalOptions(b,) - getTotalOptions(a));
     filtered.sort((a, b) => commonData.indexOf(b) - commonData.indexOf(a));
 
     setWordsList(filtered);
@@ -177,9 +172,6 @@ function App() {
   //   console.log(filtered.length);
   // }
 
-  const getTotalOptions = (word: string) =>
-    word.split('').reduce((sum, letter) => sum + lettersStatsMap[letter], 0);
-
   const onInputFocus = (index: number) => {
     setActiveIndex(index);
   }
@@ -191,42 +183,44 @@ function App() {
 
   return (
     <>
-      <h1>Wordable</h1>
-      <div>
-        <a href="https://wordly.org/" target="_blank">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Wordle_Logo.svg"
-            className="logo react"
-            alt="React logo"
-          />
-        </a>
-      </div>
-      <div className="words-container">
-        {words.map((word, wIndex) =>
-          (wordsList.length <= 1 && word[0] == '') ||
-            (wIndex > 0 && words[wIndex - 1][4] === '') ? (
-            ''
-          ) : (
-            <div key={wIndex} className="letters-container">
-              {word.map((letter, lIndex) => (
-                <div
-                  key={'' + lIndex}
-                  className={'input-letter ' + getLetterStatus(wIndex, lIndex)}
-                  onDoubleClick={() => handleClick(wIndex, lIndex)}
-                >
-                  <input
-                    maxLength={1}
-                    value={letter.toUpperCase()}
-                    onFocus={() => onInputFocus(getGlobalIndex(wIndex, lIndex))}
-                    onChange={(event) => onInputChange(event as unknown as InputEvent, wIndex, lIndex)}
-                  />
-                </div>
-              ))}
-            </div>
-          )
-        )}
-      </div>
-      <Options options={wordsList}/>
+      <LetterStatusProvider>
+        <h1>Wordable</h1>
+        <div>
+          <a href="https://wordly.org/" target="_blank">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Wordle_Logo.svg"
+              className="logo react"
+              alt="React logo"
+            />
+          </a>
+        </div>
+        <div className="words-container">
+          {words.map((word, wIndex) =>
+            (wordsList.length <= 1 && word[0] == '') ||
+              (wIndex > 0 && words[wIndex - 1][4] === '') ? (
+              ''
+            ) : (
+              <div key={wIndex} className="letters-container">
+                {word.map((letter, lIndex) => (
+                  <div
+                    key={'' + lIndex}
+                    className={'input-letter ' + getLetterStatus(wIndex, lIndex)}
+                    onDoubleClick={() => handleClick(wIndex, lIndex)}
+                  >
+                    <input
+                      maxLength={1}
+                      value={letter.toUpperCase()}
+                      onFocus={() => onInputFocus(getGlobalIndex(wIndex, lIndex))}
+                      onChange={(event) => onInputChange(event as unknown as InputEvent, wIndex, lIndex)}
+                    />
+                  </div>
+                ))}
+              </div>
+            )
+          )}
+        </div>
+        <Options options={wordsList} />
+      </LetterStatusProvider>
     </>
   );
 }
