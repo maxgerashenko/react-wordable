@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import './option.css';
-import { LetterStatusContext } from './letter_status_context';
 import { getTotalOptions } from '../../utils/utils';
+import { LetterStatusContext } from './letter_status_context_provider';
 
 export default function Option({ word }: { word: string }) {
     const letterStatusMap = useContext(LetterStatusContext);

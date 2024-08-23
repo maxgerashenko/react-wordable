@@ -5,7 +5,8 @@ import { common_words as commonWords } from './data/common_words.ts';
 import { getGlobalIndex, getLocalIndex, focusNextEl } from './utils/utils.ts';
 import { LETTERS_COUNT } from './utils/consts.ts'
 import { Options } from './views/options/options.tsx';
-import LetterStatusProvider from './views/options/letter_status_provider.tsx';
+import { LetterStatusProvider } from './views/options/letter_status_context_provider.tsx';
+
 
 function App() {
   console.clear();
