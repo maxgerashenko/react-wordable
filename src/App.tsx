@@ -6,6 +6,7 @@ import { getGlobalIndex, getLocalIndex, focusNextEl } from './utils/utils.ts';
 import { LETTERS_COUNT } from './utils/consts.ts'
 import { Options } from './views/options/options.tsx';
 import { LetterStatusProvider } from './views/options/letter_status_context_provider.tsx';
+import WordsContainer from './views/words/words_contianer.tsx';
 
 
 function App() {
@@ -108,14 +109,6 @@ function App() {
     setWordsList(filtered);
   };
 
-  const statusMap: { [key: number]: string } = {
-    0: 'status-empty',
-    1: 'status-exist',
-    2: 'status-match',
-  };
-  const getLetterStatus = (wIndex: number, lIndex: number): string =>
-    statusMap[states[wIndex][lIndex]];
-
   const getInputValue = (event: InputEvent) => {
     let input = (event.target as HTMLInputElement)?.value ?? '';
     return input.split('').reverse()[0] + '';
@@ -195,33 +188,9 @@ function App() {
             />
           </a>
         </div>
-        <div className="words-container">
-          {words.map((word, wIndex) =>
-            (wordsList.length <= 1 && word[0] == '') ||
-              (wIndex > 0 && words[wIndex - 1][4] === '') ? (
-              ''
-            ) : (
-              <div key={wIndex} className="letters-container">
-                {word.map((letter, lIndex) => (
-                  <div
-                    key={'' + lIndex}
-                    className={'input-letter ' + getLetterStatus(wIndex, lIndex)}
-                    onDoubleClick={() => handleClick(wIndex, lIndex)}
-                  >
-                    <input
-                      maxLength={1}
-                      value={letter.toUpperCase()}
-                      onFocus={() => onInputFocus(getGlobalIndex(wIndex, lIndex))}
-                      onChange={(event) => onInputChange(event as unknown as InputEvent, wIndex, lIndex)}
-                    />
-                  </div>
-                ))}
-              </div>
-            )
-          )}
-        </div>
+        <WordsContainer words={words} isWordlistEmpty={wordsList.length <= 1} />
         <Options options={wordsList} />
-      </LetterStatusProvider>
+      </LetterStatusProvider >
     </>
   );
 }
