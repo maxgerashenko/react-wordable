@@ -12,7 +12,7 @@ import { WordsStatesContext } from './providers/words_states_provider.tsx';
 
 
 function App() {
-  console.clear();
+  // console.clear();
   const { activeIndex, setActiveIndex } = useContext(ActiveIndexContext);
   const { words, setWords, states, setStates } = useContext(WordsStatesContext)
 

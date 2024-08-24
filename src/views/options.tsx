@@ -4,7 +4,8 @@ import "./options.css";
 import { WordListContext } from "../providers/words_list_provider";
 import { ActiveIndexContext } from "../providers/active_index_provider";
 import { WordsStatesContext } from "../providers/words_states_provider";
-import { LETTERS_COUNT } from "../utils/consts";
+import { LETTERS_COUNT, WORDS_COUNT } from "../utils/consts";
+import { getGlobalIndex } from "../utils/utils";
 
 
 export function Options() {
@@ -18,12 +19,12 @@ export function Options() {
         (start: number | null, word: string, index: number) =>
           word[0] === '' && start == null ? index : start,
         null
-      ) ?? 4;
+      ) ?? WORDS_COUNT - 1;
 
     let newWords = [...words];
     newWords[start as unknown as number] = word.split('');
 
-    setActiveIndex((start as unknown as number) + LETTERS_COUNT - 1);
+    setActiveIndex(getGlobalIndex(start as unknown as number, LETTERS_COUNT - 1));
     setWords(newWords);
   };
 
