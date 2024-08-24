@@ -1,3 +1,4 @@
+import React from "react";
 import Option from "./option";
 import "./options.css";
 

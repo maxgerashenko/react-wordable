@@ -1,3 +1,5 @@
+import React from "react";
+
 const statusMap: { [key: number]: string } = {
     0: 'status-empty',
     1: 'status-exist',

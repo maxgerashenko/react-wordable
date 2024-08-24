@@ -178,8 +178,8 @@ function App() {
 
   return (
     <>
-      <Title />
       <LetterStatusProvider>
+        <Title />
         <WordsContainer words={words} isWordlistEmpty={wordsList.length <= 1} />
         <Options options={wordsList} />
       </LetterStatusProvider >
