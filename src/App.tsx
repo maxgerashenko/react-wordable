@@ -8,20 +8,15 @@ import WordsContainer from './views/words_contianer.tsx';
 import { Title } from './views/title.tsx';
 import React from 'react';
 import { ActiveIndexContext } from './providers/active_index_provider.tsx';
+import { WordsStatesContext } from './providers/words_states_provider.tsx';
 
 
 function App() {
   console.clear();
-  const {activeIndex, setActiveIndex} = useContext(ActiveIndexContext);
+  const { activeIndex, setActiveIndex } = useContext(ActiveIndexContext);
+  const { words, setWords, states, setStates } = useContext(WordsStatesContext)
 
   const commonData = commonWords.split('\n');
-  const [words, setWords] = useState<string[][]>(
-    Array(6).fill(null).fill(Array(LETTERS_COUNT).fill(''))
-  );
-
-  const [states, setStates] = useState<number[][]>(
-    Array(6).fill(null).fill(Array(LETTERS_COUNT).fill(0))
-  );
 
   const updateState = useCallback(
     (wIndex: number, lIndex: number, newState?: number) => {
@@ -83,30 +78,30 @@ function App() {
           : // letterStatus === 2
           filtered.filter((word) => word[lIndex] === letter);
 
-  const getFiltered = (words: string[][]) => {
-    let allLetters = words
-      .reduce((letters, word) => [...letters, ...word], [])
-      .filter((el) => el != '');
+  // const getFiltered = (words: string[][]) => {
+  //   let allLetters = words
+  //     .reduce((letters, word) => [...letters, ...word], [])
+  //     .filter((el) => el != '');
 
-    let letters = words.reduce((letters, word) => [...letters, ...word], []);
-    let filtered = letters.reduce(
-      (filtered: string[], letter: string, index: number) =>
-        filterByStatus(
-          filtered,
-          letter,
-          states[getLocalIndex(index)[0]][getLocalIndex(index)[1]],
-          getLocalIndex(index)[1] // letterIndex
-        ),
-      // data
-      []
-    );
-    return filtered;
-  };
+  //   let letters = words.reduce((letters, word) => [...letters, ...word], []);
+  //   let filtered = letters.reduce(
+  //     (filtered: string[], letter: string, index: number) =>
+  //       filterByStatus(
+  //         filtered,
+  //         letter,
+  //         states[getLocalIndex(index)[0]][getLocalIndex(index)[1]],
+  //         getLocalIndex(index)[1] // letterIndex
+  //       ),
+  //     // data
+  //     []
+  //   );
+  //   return filtered;
+  // };
 
   const updateFilter = () => {
-    const filtered = getFiltered(words);
+    // const filtered = getFiltered(words);
     // filtered.sort((a, b) => getTotalOptions(b,) - getTotalOptions(a));
-    filtered.sort((a, b) => commonData.indexOf(b) - commonData.indexOf(a));
+    // filtered.sort((a, b) => commonData.indexOf(b) - commonData.indexOf(a));
 
     // setWordsList(filtered);
   };
@@ -125,22 +120,22 @@ function App() {
     updateFilter();
   }, [states]);
 
-  const onInputChange = (event: InputEvent, wIndex: number, lIndex: number) => {
-    let input = getInputValue(event);
+  // const onInputChange = (event: InputEvent, wIndex: number, lIndex: number) => {
+  //   let input = getInputValue(event);
 
-    let newWords = [...words];
-    newWords[wIndex] = [...words[wIndex]];
-    newWords[wIndex][lIndex] = input;
-    setWords(newWords);
-    (event.target as HTMLInputElement).blur();
-    // updateState(wIndex, lIndex);
-  };
+  //   let newWords = [...words];
+  //   newWords[wIndex] = [...words[wIndex]];
+  //   newWords[wIndex][lIndex] = input;
+  //   setWords(newWords);
+  //   (event.target as HTMLInputElement).blur();
+  //   // updateState(wIndex, lIndex);
+  // };
 
-  const handleClick = useCallback((wIndex: number, lIndex: number) => {
-    let newState = (states[wIndex][lIndex] + 1) % 3;
-    updateState(wIndex, lIndex, newState);
-    updateFilter();
-  }, []);
+  // const handleClick = useCallback((wIndex: number, lIndex: number) => {
+  //   let newState = (states[wIndex][lIndex] + 1) % 3;
+  //   updateState(wIndex, lIndex, newState);
+  //   updateFilter();
+  // }, []);
 
 
   // research
@@ -166,7 +161,7 @@ function App() {
   return (
     <>
       <Title />
-      <WordsContainer words={words} />
+      <WordsContainer />
       <Options />
     </>
   );

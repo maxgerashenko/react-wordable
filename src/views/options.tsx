@@ -3,11 +3,13 @@ import Option from "./option";
 import "./options.css";
 import { WordListContext } from "../providers/words_list_provider";
 import { ActiveIndexContext } from "../providers/active_index_provider";
+import { WordsStatesContext } from "../providers/words_states_provider";
 
 
 export function Options() {
   const { wordsList } = useContext(WordListContext);
-  const {activeIndex, setActiveIndex} = useContext(ActiveIndexContext);
+  const { activeIndex, setActiveIndex } = useContext(ActiveIndexContext);
+  const { words, setWords } = useContext(WordsStatesContext);
 
   const onWordClick = (word: string) => {
     //     let start =
@@ -29,7 +31,12 @@ export function Options() {
       <h1>{wordsList.length}</h1>
       <div className="word-box">
         {
-          wordsList.map((word, index) => (<Option key={index} word={word} onWordClick={() => onWordClick(word)}/>))
+          wordsList.map(
+            (word, index) => (
+              <Option
+                key={index}
+                word={word}
+                onWordClick={() => onWordClick(word)} />))
         }
       </div>
     </>

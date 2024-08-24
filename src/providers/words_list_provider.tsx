@@ -3,10 +3,6 @@ import { createContext } from "react";
 import { words as wordsData } from '../data/words.ts';
 
 
-interface LetterStatusMap {
-    [key: string]: number
-}
-
 export const WordListContext = createContext<{
     wordsList: string[],
     setWordsList: Dispatch<SetStateAction<string[]>>
