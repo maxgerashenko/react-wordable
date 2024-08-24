@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { createContext } from 'react';
-import { letters as letterStatus } from '../../data/letters'
+import { letters as letterStatus } from '../data/letters'
 
 interface LetterStatusMap {
     [key: string]: number
