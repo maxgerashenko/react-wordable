@@ -4,6 +4,7 @@ import "./options.css";
 import { WordListContext } from "../providers/words_list_provider";
 import { ActiveIndexContext } from "../providers/active_index_provider";
 import { WordsStatesContext } from "../providers/words_states_provider";
+import { LETTERS_COUNT } from "../utils/consts";
 
 
 export function Options() {
@@ -12,18 +13,18 @@ export function Options() {
   const { words, setWords } = useContext(WordsStatesContext);
 
   const onWordClick = (word: string) => {
-    //     let start =
-    //       words.reduce(
-    //         (start: number | null, word: string, index: number) =>
-    //           word[0] === '' && start == null ? index : start,
-    //         null
-    //       ) ?? 4;
+    let start =
+      words.reduce(
+        (start: number | null, word: string, index: number) =>
+          word[0] === '' && start == null ? index : start,
+        null
+      ) ?? 4;
 
-    //     let newWords = [...words];
-    //     newWords[start as unknown as number] = word.split('');
+    let newWords = [...words];
+    newWords[start as unknown as number] = word.split('');
 
-    //     setWords(newWords);
-    //     setActiveIndex((activeIndex) => activeIndex + 1);
+    setActiveIndex((start as unknown as number) + LETTERS_COUNT - 1);
+    setWords(newWords);
   };
 
   return (

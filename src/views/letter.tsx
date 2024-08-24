@@ -10,7 +10,6 @@ export default function Letter({ letter, status, onDoubleClick, onInputFocus, on
     return (
         <>
             <div
-                // key={'' + lIndex}
                 className={'input-letter ' + statusMap[status]}
                 onDoubleClick={onDoubleClick}
             >
