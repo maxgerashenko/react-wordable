@@ -4,9 +4,10 @@ import { words as wordsData } from './data/words.ts';
 import { common_words as commonWords } from './data/common_words.ts';
 import { getGlobalIndex, getLocalIndex, focusNextEl } from './utils/utils.ts';
 import { LETTERS_COUNT } from './utils/consts.ts'
-import { Options } from './views/options/options.tsx';
-import { LetterStatusProvider } from './views/options/letter_status_context_provider.tsx';
-import WordsContainer from './views/words/words_contianer.tsx';
+import { Options } from './views/options.tsx';
+import { LetterStatusProvider } from './views/letter_status_context_provider.tsx';
+import WordsContainer from './views/words_contianer.tsx';
+import { Title } from './views/title.tsx';
 
 
 function App() {
@@ -177,17 +178,8 @@ function App() {
 
   return (
     <>
+      <Title />
       <LetterStatusProvider>
-        <h1>Wordable</h1>
-        <div>
-          <a href="https://wordly.org/" target="_blank">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Wordle_Logo.svg"
-              className="logo react"
-              alt="React logo"
-            />
-          </a>
-        </div>
         <WordsContainer words={words} isWordlistEmpty={wordsList.length <= 1} />
         <Options options={wordsList} />
       </LetterStatusProvider >

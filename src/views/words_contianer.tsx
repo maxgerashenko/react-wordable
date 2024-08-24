@@ -1,4 +1,3 @@
-import Letter from "./letter";
 import Word from "./word";
 
 export default function WordsContainer({ words,
@@ -14,7 +13,7 @@ export default function WordsContainer({ words,
         <>
             <div className="words-container">
                 {words.map((word, wIndex) =>
-                    isVisible(word, wIndex) ? (
+                    !isVisible(word, wIndex) ? (
                         <Word key={wIndex} word={word} />
                     ) : ''
                 )}
