@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useContext } from 'react';
 import './App.css';
 import { common_words as commonWords } from './data/common_words.ts';
 import { getLocalIndex, focusNextEl } from './utils/utils.ts';
@@ -7,10 +7,13 @@ import { Options } from './views/options.tsx';
 import WordsContainer from './views/words_contianer.tsx';
 import { Title } from './views/title.tsx';
 import React from 'react';
+import { ActiveIndexContext } from './providers/active_index_provider.tsx';
 
 
 function App() {
   console.clear();
+  const {activeIndex, setActiveIndex} = useContext(ActiveIndexContext);
+
   const commonData = commonWords.split('\n');
   const [words, setWords] = useState<string[][]>(
     Array(6).fill(null).fill(Array(LETTERS_COUNT).fill(''))
@@ -19,7 +22,6 @@ function App() {
   const [states, setStates] = useState<number[][]>(
     Array(6).fill(null).fill(Array(LETTERS_COUNT).fill(0))
   );
-  const [activeIndex, setActiveIndex] = useState<number>(0);
 
   const updateState = useCallback(
     (wIndex: number, lIndex: number, newState?: number) => {
@@ -140,20 +142,6 @@ function App() {
     updateFilter();
   }, []);
 
-  const onWordClick = (word: string) => {
-    let start =
-      words.reduce(
-        (start: number | null, word: string, index: number) =>
-          word[0] === '' && start == null ? index : start,
-        null
-      ) ?? 4;
-
-    let newWords = [...words];
-    newWords[start as unknown as number] = word.split('');
-
-    setWords(newWords);
-    setActiveIndex((index) => index + 1);
-  };
 
   // research
   // for (let ascii_code = 97; ascii_code <= 122; ascii_code++) {

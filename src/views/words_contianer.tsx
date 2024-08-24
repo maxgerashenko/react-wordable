@@ -12,7 +12,11 @@ export default function WordsContainer({
     const isWordlistEmpty = wordsList.length <= 1;
     const isWordEmtpy = (word: string[]) => word[0] == '';
     const isPrevWordEmpty = (wIndex: number) => (wIndex > 0 && words[wIndex - 1][0] === '')
-    const isVisible = (word: string[], wIndex: number) => (isWordlistEmpty && isWordEmtpy(word)) || isPrevWordEmpty(wIndex)
+    const isVisible = (word: string[], wIndex: number) =>
+        (isWordlistEmpty && isWordEmtpy(word)) || isPrevWordEmpty(wIndex);
+
+        const {activeIndex, setActiveIndex} = useContext(ActiveIndexContext);
+        
 
     return (
         <>

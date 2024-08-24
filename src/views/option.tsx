@@ -1,18 +1,16 @@
-import { useContext } from 'react';
+import { MouseEventHandler, useContext } from 'react';
 import './option.css';
 import { getTotalOptions } from '../utils/utils';
 import { LetterStatusContext } from '../providers/letter_status_provider';
 import React from 'react';
 
-export default function Option({ word }: { word: string }) {
+export default function Option({ word, onWordClick }: { word: string, onWordClick: MouseEventHandler<HTMLButtonElement> }) {
     const letterStatusMap = useContext(LetterStatusContext);
-
-    const onWordClick = (word: string) => { };
 
     return (
         <>
             <div className="word">
-                <button onClick={() => onWordClick(word)}>
+                <button onClick={onWordClick}>
                     {word.toUpperCase()} <h6>{getTotalOptions(word, letterStatusMap)}</h6>
                 </button>
             </div>

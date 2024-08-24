@@ -5,12 +5,15 @@ import './index.css';
 import { LetterStatusProvider } from './providers/letter_status_provider.tsx';
 import React from 'react';
 import { WordListProvider } from './providers/words_list_provider.tsx';
+import { ActiveIndexProvider } from './providers/active_index_provider.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <LetterStatusProvider>
       <WordListProvider>
-        <App />
+        <ActiveIndexProvider>
+          <App />
+        </ActiveIndexProvider>
       </WordListProvider>
     </LetterStatusProvider>
   </StrictMode >
