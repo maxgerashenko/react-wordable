@@ -1,11 +1,9 @@
 import { useState, useCallback, useEffect } from 'react';
 import './App.css';
-import { words as wordsData } from './data/words.ts';
 import { common_words as commonWords } from './data/common_words.ts';
-import { getGlobalIndex, getLocalIndex, focusNextEl } from './utils/utils.ts';
+import { getLocalIndex, focusNextEl } from './utils/utils.ts';
 import { LETTERS_COUNT } from './utils/consts.ts'
 import { Options } from './views/options.tsx';
-import { LetterStatusProvider } from './providers/letter_status_context_provider.tsx';
 import WordsContainer from './views/words_contianer.tsx';
 import { Title } from './views/title.tsx';
 import React from 'react';
@@ -13,12 +11,11 @@ import React from 'react';
 
 function App() {
   console.clear();
-  const data = wordsData.split('\n');
   const commonData = commonWords.split('\n');
   const [words, setWords] = useState<string[][]>(
     Array(6).fill(null).fill(Array(LETTERS_COUNT).fill(''))
   );
-  const [wordsList, setWordsList] = useState<string[]>(data);
+
   const [states, setStates] = useState<number[][]>(
     Array(6).fill(null).fill(Array(LETTERS_COUNT).fill(0))
   );
@@ -98,7 +95,8 @@ function App() {
           states[getLocalIndex(index)[0]][getLocalIndex(index)[1]],
           getLocalIndex(index)[1] // letterIndex
         ),
-      data
+      // data
+      []
     );
     return filtered;
   };
@@ -108,7 +106,7 @@ function App() {
     // filtered.sort((a, b) => getTotalOptions(b,) - getTotalOptions(a));
     filtered.sort((a, b) => commonData.indexOf(b) - commonData.indexOf(a));
 
-    setWordsList(filtered);
+    // setWordsList(filtered);
   };
 
   const getInputValue = (event: InputEvent) => {
@@ -180,8 +178,8 @@ function App() {
   return (
     <>
       <Title />
-      <WordsContainer words={words} isWordlistEmpty={wordsList.length <= 1} />
-      <Options options={wordsList} />
+      <WordsContainer words={words} />
+      <Options />
     </>
   );
 }

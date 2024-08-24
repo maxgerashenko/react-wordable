@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import Option from "./option";
 import "./options.css";
+import { WordListContext } from "../providers/words_list_provider";
 
 
-export function Options({ options }: { options: string[] }) {
+export function Options() {
+  const { wordsList } = useContext(WordListContext);
+
   return (
     <>
-      <h1>{options.length}</h1>
+      <h1>{wordsList.length}</h1>
       <div className="word-box">
         {
-          options.map((word, index) => (<Option key={index} word={word} />))
+          wordsList.map((word, index) => (<Option key={index} word={word} />))
         }
       </div>
     </>
