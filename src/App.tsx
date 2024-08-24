@@ -5,9 +5,10 @@ import { common_words as commonWords } from './data/common_words.ts';
 import { getGlobalIndex, getLocalIndex, focusNextEl } from './utils/utils.ts';
 import { LETTERS_COUNT } from './utils/consts.ts'
 import { Options } from './views/options.tsx';
-import { LetterStatusProvider } from './views/letter_status_context_provider.tsx';
+import { LetterStatusProvider } from './providers/letter_status_context_provider.tsx';
 import WordsContainer from './views/words_contianer.tsx';
 import { Title } from './views/title.tsx';
+import React from 'react';
 
 
 function App() {
@@ -178,11 +179,9 @@ function App() {
 
   return (
     <>
-      <LetterStatusProvider>
-        <Title />
-        <WordsContainer words={words} isWordlistEmpty={wordsList.length <= 1} />
-        <Options options={wordsList} />
-      </LetterStatusProvider >
+      <Title />
+      <WordsContainer words={words} isWordlistEmpty={wordsList.length <= 1} />
+      <Options options={wordsList} />
     </>
   );
 }
