@@ -1,4 +1,5 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
+import { getInputValue } from "../utils/utils";
 
 const statusMap: { [key: number]: string } = {
     0: 'status-empty',
@@ -17,7 +18,7 @@ export default function Letter({ letter, status, onDoubleClick, onInputFocus, on
                     maxLength={1}
                     value={letter.toUpperCase()}
                     onFocus={onInputFocus}
-                    onChange={onInputChange}
+                    onChange={event => onInputChange(getInputValue(event))}
                 />
             </div>
         </>

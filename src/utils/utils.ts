@@ -1,3 +1,4 @@
+import { ChangeEvent } from 'react';
 import { LETTERS_COUNT } from './consts'
 
 export const getGlobalIndex = (wIndex: number, lIndex: number) =>
@@ -12,5 +13,10 @@ export const focusNextEl = (index: number) => {
     document.getElementsByTagName('input')[index + 1]?.focus();
 };
 
-export const getTotalOptions = (word: string, lettersStatsMap: {[key: string]: number}) =>
+export const getTotalOptions = (word: string, lettersStatsMap: { [key: string]: number }) =>
     word.split('').reduce((sum, letter) => sum + lettersStatsMap[letter], 0);
+
+export const getInputValue = (event: ChangeEvent<HTMLInputElement>) =>
+    ((event.target as HTMLInputElement)?.value ?? '')
+        .split('')
+        .reverse()[0] + '';

@@ -15,12 +15,18 @@ export default function WordsContainer() {
     const isVisible = (word: string[], wIndex: number) =>
         (isWordlistEmpty && isWordEmtpy(word)) || isPrevWordEmpty(wIndex);
 
+    const onLetterChange = (letter: string, wIndex: number, lIndex: number) => {
+        console.log(letter, wIndex, lIndex);
+    };
+
     return (
         <>
             <div className="words-container">
                 {words.map((word, wIndex) =>
                     !isVisible(word, wIndex) ? (
-                        <Word key={wIndex} word={word} />
+                        <Word onLetterChange={(letter, lIndex) => onLetterChange(letter, wIndex, lIndex)}
+                            key={wIndex}
+                            word={word} />
                     ) : ''
                 )}
             </div>

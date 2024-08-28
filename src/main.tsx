@@ -11,13 +11,13 @@ import { WordsStatesProvider } from './providers/words_states_provider.tsx';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <LetterStatusProvider>
-      <WordListProvider>
-        <ActiveIndexProvider>
-          <WordsStatesProvider>
+      <WordsStatesProvider>
+        <WordListProvider>
+          <ActiveIndexProvider>
             <App />
-          </WordsStatesProvider>
-        </ActiveIndexProvider>
-      </WordListProvider>
+          </ActiveIndexProvider>
+        </WordListProvider>
+      </WordsStatesProvider>
     </LetterStatusProvider>
   </StrictMode >
 );

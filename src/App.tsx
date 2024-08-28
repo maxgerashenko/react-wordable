@@ -106,10 +106,9 @@ function App() {
     // setWordsList(filtered);
   };
 
-  const getInputValue = (event: InputEvent) => {
-    let input = (event.target as HTMLInputElement)?.value ?? '';
-    return input.split('').reverse()[0] + '';
-  };
+  useEffect(() => {
+    focusNextEl(-1);
+  }, []); // On init
 
   useEffect(() => {
     updateFilter();
@@ -152,11 +151,6 @@ function App() {
   const onInputFocus = (index: number) => {
     setActiveIndex(index);
   }
-
-  useEffect(() => {
-    focusNextEl(-1);
-  }, []); // On init only
-
 
   return (
     <>
