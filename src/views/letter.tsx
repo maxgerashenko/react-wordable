@@ -18,7 +18,7 @@ export default function Letter({ letter, status, onDoubleClick, onInputFocus, on
                     maxLength={1}
                     value={letter.toUpperCase()}
                     onFocus={onInputFocus}
-                    onChange={event => onInputChange(getInputValue(event))}
+                    onChange={onInputChange}
                 />
             </div>
         </>

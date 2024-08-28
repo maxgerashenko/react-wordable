@@ -120,14 +120,11 @@ function App() {
   }, [states]);
 
   // const onInputChange = (event: InputEvent, wIndex: number, lIndex: number) => {
-  //   let input = getInputValue(event);
-
   //   let newWords = [...words];
   //   newWords[wIndex] = [...words[wIndex]];
   //   newWords[wIndex][lIndex] = input;
   //   setWords(newWords);
   //   (event.target as HTMLInputElement).blur();
-  //   // updateState(wIndex, lIndex);
   // };
 
   // const handleClick = useCallback((wIndex: number, lIndex: number) => {
