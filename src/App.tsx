@@ -98,7 +98,7 @@ function App() {
   //   return filtered;
   // };
 
-  const updateFilter = () => {
+  const updateFiltered = () => {
     // const filtered = getFiltered(words);
     // filtered.sort((a, b) => getTotalOptions(b,) - getTotalOptions(a));
     // filtered.sort((a, b) => commonData.indexOf(b) - commonData.indexOf(a));
@@ -111,26 +111,18 @@ function App() {
   }, []); // On init
 
   useEffect(() => {
-    updateFilter();
+    updateFiltered();
     focusNextEl(activeIndex);
   }, [words]);
 
   useEffect(() => {
-    updateFilter();
+    updateFiltered();
   }, [states]);
-
-  // const onInputChange = (event: InputEvent, wIndex: number, lIndex: number) => {
-  //   let newWords = [...words];
-  //   newWords[wIndex] = [...words[wIndex]];
-  //   newWords[wIndex][lIndex] = input;
-  //   setWords(newWords);
-  //   (event.target as HTMLInputElement).blur();
-  // };
 
   // const handleClick = useCallback((wIndex: number, lIndex: number) => {
   //   let newState = (states[wIndex][lIndex] + 1) % 3;
   //   updateState(wIndex, lIndex, newState);
-  //   updateFilter();
+  //   updateFiltered();
   // }, []);
 
 
@@ -144,10 +136,6 @@ function App() {
   //   let filtered = getFiltered(newWords);
   //   console.log(filtered.length);
   // }
-
-  const onInputFocus = (index: number) => {
-    setActiveIndex(index);
-  }
 
   return (
     <>
