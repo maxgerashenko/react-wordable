@@ -37,34 +37,34 @@ export default function WordsContainer() {
             newStates[wIndex]![lIndex]! = newState;
 
             // let letter = words[wIndex][lIndex];
-            // let newStates = states.map((word, wI) =>
-            //   word.map((oldState, lI) =>
-            //     newState == null
-            //       ? wI > 0 && states[wI - 1][lI] === 2
-            //         ? 2
-            //         : oldState
-            //       : (words[wI][lI] === letter && oldState === 0) ||
-            //         (wIndex == wI && lIndex == lI)
-            //         ? newState
-            //         : oldState
-            //   )
+            // newStates = states.map((word, wI) =>
+            //     word.map((oldState, lI) =>
+            //         newState == null
+            //             ? wI > 0 && states[wI - 1][lI] === 2
+            //                 ? 2
+            //                 : oldState
+            //             : (words[wI][lI] === letter && oldState === 0) ||
+            //                 (wIndex == wI && lIndex == lI)
+            //                 ? newState
+            //                 : oldState
+            //     )
             // );
 
             // let matchMap: { [key: string]: number[] } = {};
             // for (let j = 0; j < words.length; j++)
-            //   for (let i = 0; i < words[i].length; i++) {
-            //     if (newStates[j][i] !== 2) continue;
-            //     matchMap[words[j][i]] = [j, i];
-            //   }
+            //     for (let i = 0; i < words[i].length; i++) {
+            //         if (newStates[j][i] !== 2) continue;
+            //         matchMap[words[j][i]] = [j, i];
+            //     }
 
             // let newWords = [...words];
             // for (let letter of Object.keys(matchMap)) {
-            //   for (let j = 0; j < words.length; j++) {
-            //     if (j <= matchMap[letter][0] || states[j][i] !== 2) continue;
+            //     for (let j = 0; j < words.length; j++) {
+            //         if (j <= matchMap[letter][0] || states[j][1 || '!!!!!!!'] !== 2) continue;
 
-            //     newStates[j][matchMap[letter][1]] === 2;
-            //     newWords[j][matchMap[letter][1]] = letter;
-            //   }
+            //         newStates[j][matchMap[letter][1]] === 2;
+            //         newWords[j][matchMap[letter][1]] = letter;
+            //     }
             // }
 
             setStates(newStates);

@@ -12,7 +12,7 @@ export default function Letter({ letter, state, onDoubleClick, onInputFocus, onI
         <>
             <div
                 className={'input-letter ' + statesMap[state]}
-                onDoubleClick={onDoubleClick}
+                onDoubleClick={event => letter !== '' ? onDoubleClick(event) : null}
             >
                 <input
                     maxLength={1}
@@ -20,7 +20,7 @@ export default function Letter({ letter, state, onDoubleClick, onInputFocus, onI
                     onFocus={onInputFocus}
                     onChange={onInputChange}
                 />
-            </div>
+            </div >
         </>
     );
 }
