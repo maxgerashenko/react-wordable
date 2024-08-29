@@ -9,8 +9,8 @@ export const getLocalIndex = (index: number): number[] => [
     index % LETTERS_COUNT,
 ];
 
-export const focusNextEl = (index: number) => {
-    document.getElementsByTagName('input')[index + 1]?.focus();
+export const focusEl = (index: number) => {
+    document.getElementsByTagName('input')[index]?.focus();
 };
 
 export const getTotalOptions = (word: string, lettersStatsMap: { [key: string]: number }) =>
