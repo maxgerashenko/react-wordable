@@ -1,17 +1,17 @@
 import React, { ChangeEvent } from "react";
 import { getInputValue } from "../utils/utils";
 
-const statusMap: { [key: number]: string } = {
+const statesMap: { [key: number]: string } = {
     0: 'status-empty',
     1: 'status-exist',
     2: 'status-match',
 };
 
-export default function Letter({ letter, status, onDoubleClick, onInputFocus, onInputChange }) {
+export default function Letter({ letter, state, onDoubleClick, onInputFocus, onInputChange }) {
     return (
         <>
             <div
-                className={'input-letter ' + statusMap[status]}
+                className={'input-letter ' + statesMap[state]}
                 onDoubleClick={onDoubleClick}
             >
                 <input
