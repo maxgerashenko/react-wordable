@@ -4,7 +4,7 @@ import { WordListContext } from "../providers/words_list_provider";
 import { ActiveIndexContext } from "../providers/active_index_provider";
 import { WordsStatesContext } from "../providers/words_states_provider";
 import { getGlobalIndex, getInputValue } from "../utils/utils";
-import { LETTERS_COUNT } from "../utils/consts";
+import { LETTERS_COUNT, STATES_COUNT } from "../utils/consts";
 import { LetterStatusContext } from "../providers/letter_status_provider";
 
 const isWordEmtpy = (word: string[]) => word[0] == '';
@@ -27,14 +27,17 @@ export default function WordsContainer() {
         setActiveIndex(getGlobalIndex(wIndex, lIndex));
 
     const handleLetterDoubleClick = useCallback((wIndex: number, lIndex: number) => {
-        let newState = (states[wIndex][lIndex] + 1) % 3;
+        const currentState = states[wIndex][lIndex];
+        const newState = (currentState + 1) % STATES_COUNT;
         updateState(wIndex, lIndex, newState);
     }, []);
 
     const updateState = useCallback(
         (wIndex: number, lIndex: number, newState: number) => {
             let newStates = [...states];
-            newStates[wIndex]![lIndex]! = newState;
+            let newWord = [...newStates[wIndex]];
+            newWord[lIndex] = newState;
+            newStates[wIndex] = newWord;
 
             // let letter = words[wIndex][lIndex];
             // newStates = states.map((word, wI) =>

@@ -8,11 +8,16 @@ const statesMap: { [key: number]: string } = {
 };
 
 export default function Letter({ letter, state, onDoubleClick, onInputFocus, onInputChange }) {
+    const onDoubleClickLocal = event => {
+        if (letter == '') return;
+        onDoubleClick(event);
+    }
+
     return (
         <>
             <div
                 className={'input-letter ' + statesMap[state]}
-                onDoubleClick={event => letter !== '' ? onDoubleClick(event) : null}
+                onDoubleClick={event => onDoubleClickLocal(event)}
             >
                 <input
                     maxLength={1}

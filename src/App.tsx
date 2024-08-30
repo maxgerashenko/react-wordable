@@ -72,7 +72,8 @@ function App() {
 
   useEffect(() => {
     updateFiltered();
-    words[0][0] !== '' && focusEl(activeIndex + 1);
+    if (words[0][0] == '') return;
+    focusEl(activeIndex + 1);
   }, [words]);
 
   useEffect(() => {
