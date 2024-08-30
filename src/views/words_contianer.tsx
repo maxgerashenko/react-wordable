@@ -3,14 +3,14 @@ import Word from "./words_word";
 import { WordListContext } from "../providers/words_list_provider";
 import { ActiveIndexContext } from "../providers/active_index_provider";
 import { WordsStatesContext } from "../providers/words_states_provider";
-import { getGlobalIndex, getInputValue } from "../utils/utils";
+import { deepCopy, getGlobalIndex, getInputValue } from "../utils/utils";
 import { LETTERS_COUNT, STATES_COUNT } from "../utils/consts";
 import { LetterStatusContext } from "../providers/letter_status_provider";
 
 const isWordEmtpy = (word: string[]) => word[0] == '';
 
 export default function WordsContainer() {
-    const { states, setStates, words, setWords, updateWordsLetter } = useContext(WordsStatesContext);
+    const { states, setStates, updateStates, words, setWords, updateWordsLetter } = useContext(WordsStatesContext);
     const { wordsList, setWordsList } = useContext(WordListContext);
     const { activeIndex, setActiveIndex } = useContext(ActiveIndexContext);
 
@@ -19,8 +19,11 @@ export default function WordsContainer() {
     const isVisible = (word: string[], wIndex: number) =>
         (isWordlistEmpty && isWordEmtpy(word)) || isPrevWordEmpty(wIndex);
     const onLetterChange = (event, wIndex: number, lIndex: number) => {
-        let letter = getInputValue(event);
-        updateWordsLetter(words, wIndex, lIndex, letter);
+        const letter = getInputValue(event);
+        const newWords = deepCopy(words);
+        newWords[wIndex][lIndex] = letter;
+        setWords(newWords);
+        // updateWordsLetter(words, wIndex, lIndex, letter);
         (event.target as HTMLInputElement).blur();
     };
     const onLetterFocus = (wIndex: number, lIndex: number) =>
@@ -30,49 +33,49 @@ export default function WordsContainer() {
         const currentState = states[wIndex][lIndex];
         const newState = (currentState + 1) % STATES_COUNT;
         updateState(wIndex, lIndex, newState);
-    }, []);
+    }, [states]);
 
-    const updateState = useCallback(
-        (wIndex: number, lIndex: number, newState: number) => {
-            let newStates = [...states];
-            let newWord = [...newStates[wIndex]];
-            newWord[lIndex] = newState;
-            newStates[wIndex] = newWord;
+    const updateState =
+        useCallback(
+            (wIndex: number, lIndex: number, newState: number) => {
 
-            // let letter = words[wIndex][lIndex];
-            // newStates = states.map((word, wI) =>
-            //     word.map((oldState, lI) =>
-            //         newState == null
-            //             ? wI > 0 && states[wI - 1][lI] === 2
-            //                 ? 2
-            //                 : oldState
-            //             : (words[wI][lI] === letter && oldState === 0) ||
-            //                 (wIndex == wI && lIndex == lI)
-            //                 ? newState
-            //                 : oldState
-            //     )
-            // );
+                let newStates = deepCopy(states);
+                newStates[wIndex][lIndex] = newState;
 
-            // let matchMap: { [key: string]: number[] } = {};
-            // for (let j = 0; j < words.length; j++)
-            //     for (let i = 0; i < words[i].length; i++) {
-            //         if (newStates[j][i] !== 2) continue;
-            //         matchMap[words[j][i]] = [j, i];
-            //     }
+                // let letter = words[wIndex][lIndex];
+                // newStates = states.map((word, wI) =>
+                //     word.map((oldState, lI) =>
+                //         newState == null
+                //             ? wI > 0 && states[wI - 1][lI] === 2
+                //                 ? 2
+                //                 : oldState
+                //             : (words[wI][lI] === letter && oldState === 0) ||
+                //                 (wIndex == wI && lIndex == lI)
+                //                 ? newState
+                //                 : oldState
+                //     )
+                // );
 
-            // let newWords = [...words];
-            // for (let letter of Object.keys(matchMap)) {
-            //     for (let j = 0; j < words.length; j++) {
-            //         if (j <= matchMap[letter][0] || states[j][1 || '!!!!!!!'] !== 2) continue;
+                // let matchMap: { [key: string]: number[] } = {};
+                // for (let j = 0; j < words.length; j++)
+                //     for (let i = 0; i < words[i].length; i++) {
+                //         if (newStates[j][i] !== 2) continue;
+                //         matchMap[words[j][i]] = [j, i];
+                //     }
 
-            //         newStates[j][matchMap[letter][1]] === 2;
-            //         newWords[j][matchMap[letter][1]] = letter;
-            //     }
-            // }
+                // let newWords = [...words];
+                // for (let letter of Object.keys(matchMap)) {
+                //     for (let j = 0; j < words.length; j++) {
+                //         if (j <= matchMap[letter][0] || states[j][1 || '!!!!!!!'] !== 2) continue;
 
-            setStates(newStates);
-        }
-        , []);
+                //         newStates[j][matchMap[letter][1]] === 2;
+                //         newWords[j][matchMap[letter][1]] = letter;
+                //     }
+                // }
+
+                setStates(newStates);
+            }
+            , [states]);
 
 
     return (

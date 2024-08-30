@@ -3,14 +3,13 @@ import { createContext } from "react";
 import { LETTERS_COUNT, WORDS_COUNT } from "../utils/consts";
 
 
-const getMatrix = (value) => Array(WORDS_COUNT).fill(null).fill(Array(LETTERS_COUNT).fill(value));
+const getMatrix = value => Array(WORDS_COUNT).fill(null).fill(Array(LETTERS_COUNT).fill(value));
 
 export const WordsStatesContext = createContext<{
     words: string[][],
     setWords: Dispatch<SetStateAction<string[][]>>,
     states: number[][],
     setStates: Dispatch<SetStateAction<number[][]>>,
-    updateWordsLetter: (words: any, wIndex: any, lIndex: any, letter: any) => void,
 }>({
     words: [[]], setWords: () => { },
     states: [[]], setStates: () => { },
@@ -19,13 +18,6 @@ export const WordsStatesContext = createContext<{
 export function WordsStatesProvider({ children }) {
     const [words, setWords] = useState<string[][]>(getMatrix(''));
     const [states, setStates] = useState<number[][]>(getMatrix(0));
-
-    const updateWordsLetter = (words, wIndex, lIndex, letter) => {
-        let newWords = [...words];
-        newWords[wIndex] = [...words[wIndex]];
-        newWords[wIndex][lIndex] = letter;
-        setWords(newWords);
-    }
 
     const updateState = useCallback(
         (wIndex: number, lIndex: number, newState: number[][]) => {
@@ -74,7 +66,6 @@ export function WordsStatesProvider({ children }) {
                 setWords,
                 states,
                 setStates,
-                updateWordsLetter
             }}>
                 {children}
             </WordsStatesContext.Provider>

@@ -20,3 +20,5 @@ export const getInputValue = (event: ChangeEvent<HTMLInputElement>) =>
     ((event.target as HTMLInputElement)?.value ?? '')
         .split('')
         .reverse()[0] + '';
+
+export const deepCopy = object => JSON.parse(JSON.stringify(object));
