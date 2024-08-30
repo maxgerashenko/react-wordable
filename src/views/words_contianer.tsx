@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from "react";
-import Word from "./word";
+import Word from "./words_word";
 import { WordListContext } from "../providers/words_list_provider";
 import { ActiveIndexContext } from "../providers/active_index_provider";
 import { WordsStatesContext } from "../providers/words_states_provider";

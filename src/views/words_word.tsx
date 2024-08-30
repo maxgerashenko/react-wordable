@@ -1,5 +1,5 @@
 import React from "react";
-import Letter from "./letter";
+import Letter from "./words_letter";
 
 export default function Word({ word, wordStates, onLetterChange, onLetterFocus, onLetterDoubleClick }) {
 
