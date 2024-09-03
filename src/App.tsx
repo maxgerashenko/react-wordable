@@ -34,11 +34,11 @@ function App() {
       wordsDataArray,
     );
 
-  const updateFiltered = () => {
+  const updateFiltered = useCallback(() => {
     updateWordsList(getFiltered(words)
       .toSorted((a, b) => getTotalOptions(b, letterStatusMap) - getTotalOptions(a, letterStatusMap))
       .toSorted((a, b) => commonWordsArray.indexOf(b) - commonWordsArray.indexOf(a)));
-  };
+  }, [words]);
 
   useEffect(() => {
     focusEl(activeIndex);

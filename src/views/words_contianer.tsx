@@ -5,14 +5,13 @@ import { ActiveIndexContext } from "../providers/active_index_provider";
 import { WordsStatesContext } from "../providers/words_states_provider";
 import { deepCopy, getGlobalIndex, getInputValue } from "../utils/utils";
 import { LETTERS_COUNT, STATES_COUNT } from "../utils/consts";
-import { LetterStatusContext } from "../providers/letter_status_provider";
 
 const isWordEmtpy = (word: string[]) => word[0] == '';
 
 export default function WordsContainer() {
-    const { states, setStates, updateStates, words, setWords, updateWordsLetter } = useContext(WordsStatesContext);
-    const { wordsList, updateWordsList } = useContext(WordListContext);
-    const { activeIndex, setActiveIndex } = useContext(ActiveIndexContext);
+    const { states, setStates, words, setWords} = useContext(WordsStatesContext);
+    const { wordsList } = useContext(WordListContext);
+    const { setActiveIndex } = useContext(ActiveIndexContext);
 
     const isWordlistEmpty = wordsList.length <= 1;
     const isPrevWordEmpty = (wIndex: number) => (wIndex > 0 && words[wIndex - 1][LETTERS_COUNT - 1] === '')
