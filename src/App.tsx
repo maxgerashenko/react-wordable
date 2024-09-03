@@ -38,7 +38,7 @@ function App() {
     updateWordsList(getFiltered(words)
       .toSorted((a, b) => getTotalOptions(b, letterStatusMap) - getTotalOptions(a, letterStatusMap))
       .toSorted((a, b) => commonWordsArray.indexOf(b) - commonWordsArray.indexOf(a)));
-  }, [words]);
+  }, [words, states]);
 
   useEffect(() => {
     focusEl(activeIndex);
