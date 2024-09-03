@@ -1,12 +1,12 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { createContext } from "react";
 import { words as wordsData } from '../data/words.ts';
-import { common_words as commonWords} from "../data/common_words.ts";
+import { common_words as commonWords } from "../data/common_words.ts";
 
 
 export const WordListContext = createContext<{
     wordsList: string[],
-    setWordsList: Dispatch<SetStateAction<string[]>>,
+    updateWordsList: () => Dispatch<SetStateAction<string[]>>,
     filterByStatus: (
         wordsList: string[],
         letter: string,
@@ -17,7 +17,7 @@ export const WordListContext = createContext<{
     commonWordsArray: [],
 }>({
     wordsList: [],
-    setWordsList: () => { },
+    updateWordsList: () => { },
     filterByStatus: () => [],
     wordsDataArray: [],
     commonWordsArray: [],
@@ -27,8 +27,16 @@ export const WordListContext = createContext<{
 export function WordListProvider({ children }) {
     const wordsDataArray = wordsData.split('\n');
     const commonWordsArray = commonWords.split('\n');
-    const [wordsList, setWordsList] = useState<string[]>(wordsDataArray);
+    const [wordsList, setWordsList] = useState<string[]>(['other', ...wordsDataArray]);
 
+    const updateWordsList = (wordsList: string[]) => {
+        if (wordsList.indexOf('snail') > 0) {
+            wordsList = ['snail', ...wordsList];
+        }
+        return setWordsList(wordsList);
+    }
+
+    // FIX GREY and GREEN STATUS CONNER CASE
     const filterByStatus = (
         wordsList: string[],
         letter: string,
@@ -53,7 +61,7 @@ export function WordListProvider({ children }) {
         <>
             <WordListContext.Provider value={{
                 wordsList,
-                setWordsList,
+                updateWordsList,
                 filterByStatus,
                 wordsDataArray,
                 commonWordsArray,

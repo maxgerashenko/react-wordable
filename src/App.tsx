@@ -17,30 +17,27 @@ function App() {
   // console.clear();
   const { activeIndex, setActiveIndex } = useContext(ActiveIndexContext);
   const { words, setWords, states, setStates } = useContext(WordsStatesContext);
-  const { filterByStatus, wordsDataArray, setWordsList, commonWordsArray } = useContext(WordListContext);
+  const { filterByStatus, wordsDataArray, updateWordsList, commonWordsArray } = useContext(WordListContext);
   const letterStatusMap = useContext(LetterStatusContext);
 
-  const getFiltered = (words: string[][]) => {
-    return words
-      .reduce((pre, letters) => [...pre, ...letters], [])
-      .filter((el) => el != '').reduce(
-        (pre: string[], letter: string, index: number) =>
-          filterByStatus(
-            pre,
-            letter,
-            states[getLocalIndex(index)[0]][getLocalIndex(index)[1]],
-            getLocalIndex(index)[1] // letterIndex
-          ),
-        wordsDataArray,
-      );
-  };
+  const getFiltered = (words: string[][]) => words
+    .reduce((pre, letters) => [...pre, ...letters], [])
+    .filter((el) => el != '')
+    .reduce(
+      (pre: string[], letter: string, index: number) =>
+        filterByStatus(
+          pre,
+          letter,
+          states[getLocalIndex(index)[0]][getLocalIndex(index)[1]],
+          getLocalIndex(index)[1] // letterIndex
+        ),
+      wordsDataArray,
+    );
 
   const updateFiltered = () => {
-    const filtered = getFiltered(words);
-    filtered.sort((a, b) => getTotalOptions(b, letterStatusMap) - getTotalOptions(a, letterStatusMap));
-    filtered.sort((a, b) => commonWordsArray.indexOf(b) - commonWordsArray.indexOf(a));
-
-    setWordsList(filtered);
+    updateWordsList(getFiltered(words)
+      .toSorted((a, b) => getTotalOptions(b, letterStatusMap) - getTotalOptions(a, letterStatusMap))
+      .toSorted((a, b) => commonWordsArray.indexOf(b) - commonWordsArray.indexOf(a)));
   };
 
   useEffect(() => {

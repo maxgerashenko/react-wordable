@@ -11,7 +11,7 @@ const isWordEmtpy = (word: string[]) => word[0] == '';
 
 export default function WordsContainer() {
     const { states, setStates, updateStates, words, setWords, updateWordsLetter } = useContext(WordsStatesContext);
-    const { wordsList, setWordsList } = useContext(WordListContext);
+    const { wordsList, updateWordsList } = useContext(WordListContext);
     const { activeIndex, setActiveIndex } = useContext(ActiveIndexContext);
 
     const isWordlistEmpty = wordsList.length <= 1;
