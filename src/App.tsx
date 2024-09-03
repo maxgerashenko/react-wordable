@@ -2,7 +2,6 @@ import { useState, useCallback, useEffect, useContext } from 'react';
 import './App.css';
 import { common_words as commonWords } from './data/common_words.ts';
 import { getLocalIndex, focusEl } from './utils/utils.ts';
-import { LETTERS_COUNT } from './utils/consts.ts'
 import { Options } from './views/options.tsx';
 import WordsContainer from './views/words_contianer.tsx';
 import { Title } from './views/title.tsx';
