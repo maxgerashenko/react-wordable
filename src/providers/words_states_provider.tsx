@@ -1,5 +1,4 @@
-import React, { Dispatch, SetStateAction, useCallback, useState } from "react";
-import { createContext } from "react";
+import React, { Dispatch, SetStateAction, useCallback, useState, createContext } from "react";
 import { LETTERS_COUNT, WORDS_COUNT } from "../utils/consts";
 
 
