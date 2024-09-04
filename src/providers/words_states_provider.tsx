@@ -3,7 +3,10 @@ import { createContext } from "react";
 import { LETTERS_COUNT, WORDS_COUNT } from "../utils/consts";
 
 
-const getMatrix = value => Array(WORDS_COUNT).fill(null).fill(Array(LETTERS_COUNT).fill(value));
+const getMatrix = value => Array(WORDS_COUNT)
+    .fill(null)
+    .fill(
+        Array(LETTERS_COUNT).fill(value));
 
 export const WordsStatesContext = createContext<{
     words: string[][],
