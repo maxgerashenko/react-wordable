@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { createContext } from "react";
 import { words as wordsData } from '../data/words.ts';
 import { common_words as commonWords } from "../data/common_words.ts";
@@ -6,7 +6,7 @@ import { common_words as commonWords } from "../data/common_words.ts";
 
 export const WordListContext = createContext<{
     wordsList: string[],
-    updateWordsList: () => Dispatch<SetStateAction<string[]>>,
+    updateWordsList: (wordsList: string[]) => Dispatch<SetStateAction<string[]>> | void,
     filterByStatus: (
         wordsList: string[],
         letter: string,
@@ -14,17 +14,16 @@ export const WordListContext = createContext<{
         lIndex: number,
     ) => string[],
     wordsDataArray: string[],
-    commonWordsArray: [],
+    commonWordsArray: string[],
 }>({
     wordsList: [],
-    updateWordsList: () => { },
+    updateWordsList: () => {},
     filterByStatus: () => [],
     wordsDataArray: [],
     commonWordsArray: [],
 });
 
-
-export function WordListProvider({ children }) {
+export function WordListProvider({ children }: { children: ReactNode }) {
     const wordsDataArray = wordsData.split('\n');
     const commonWordsArray = commonWords.split('\n');
     const [wordsList, setWordsList] = useState<string[]>(['other', ...wordsDataArray]);

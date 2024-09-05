@@ -1,8 +1,8 @@
-import React, { Dispatch, SetStateAction, useCallback, useState, createContext } from "react";
+import { Dispatch, SetStateAction, useCallback, useState, createContext, ReactNode } from "react";
 import { LETTERS_COUNT, WORDS_COUNT } from "../utils/consts";
 
 
-const getMatrix = value => Array(WORDS_COUNT)
+const getMatrix = (value: any) => Array(WORDS_COUNT)
     .fill(null)
     .fill(
         Array(LETTERS_COUNT).fill(value));
@@ -17,12 +17,12 @@ export const WordsStatesContext = createContext<{
     states: [[]], setStates: () => { },
 });
 
-export function WordsStatesProvider({ children }) {
+export function WordsStatesProvider({ children }: { children: ReactNode }) {
     const [words, setWords] = useState<string[][]>(getMatrix(''));
     const [states, setStates] = useState<number[][]>(getMatrix(0));
 
     const updateState = useCallback(
-        (wIndex: number, lIndex: number, newState: number[][]) => {
+        (wIndex: number, lIndex: number, newState: number) => {
             let newStates = [...states];
 
             newStates[wIndex]![lIndex]! = newState;

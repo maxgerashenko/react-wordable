@@ -1,8 +1,8 @@
-import { MouseEventHandler, useContext } from 'react';
 import './option.css';
+
+import { MouseEventHandler, useContext } from 'react';
 import { getTotalOptions } from '../utils/utils';
 import { LetterStatusContext } from '../providers/letter_status_provider';
-import React from 'react';
 
 export default function Option({ word, onWordClick }: { word: string, onWordClick: MouseEventHandler<HTMLButtonElement> }) {
     const letterStatusMap = useContext(LetterStatusContext);

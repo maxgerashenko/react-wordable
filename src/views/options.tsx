@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
-import Option from "./option";
 import "./options.css";
+
+import { useContext } from "react";
+import Option from "./option";
 import { WordListContext } from "../providers/words_list_provider";
 import { ActiveIndexContext } from "../providers/active_index_provider";
 import { WordsStatesContext } from "../providers/words_states_provider";

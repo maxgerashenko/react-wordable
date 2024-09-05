@@ -1,6 +1,3 @@
-import React, { ChangeEvent } from "react";
-import { getInputValue } from "../utils/utils";
-
 const statesMap: { [key: number]: string } = {
     0: 'status-empty',
     1: 'status-exist',

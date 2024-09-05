@@ -1,6 +1,5 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { createContext } from "react";
-import { words as wordsData } from '../data/words.ts';
 
 
 export const ActiveIndexContext = createContext<{
@@ -8,7 +7,7 @@ export const ActiveIndexContext = createContext<{
     setActiveIndex: Dispatch<SetStateAction<number>>
 }>({ activeIndex: 0, setActiveIndex: () => { } });
 
-export function ActiveIndexProvider({ children }) {
+export function ActiveIndexProvider({ children }: { children: ReactNode }) {
     const [activeIndex, setActiveIndex] = useState<number>(0);
 
     return (

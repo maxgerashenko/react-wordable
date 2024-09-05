@@ -15,8 +15,8 @@ import { LETTERS_COUNT } from './utils/consts.ts';
 
 function App() {
   // console.clear();
-  const { activeIndex, setActiveIndex } = useContext(ActiveIndexContext);
-  const { words, setWords, states, setStates } = useContext(WordsStatesContext);
+  const { activeIndex } = useContext(ActiveIndexContext);
+  const { words, states } = useContext(WordsStatesContext);
   const { filterByStatus, wordsDataArray, updateWordsList, commonWordsArray } = useContext(WordListContext);
   const letterStatusMap = useContext(LetterStatusContext);
 
@@ -36,8 +36,8 @@ function App() {
 
   const updateFiltered = useCallback(() => {
     updateWordsList(getFiltered(words)
-      .toSorted((a, b) => getTotalOptions(b, letterStatusMap) - getTotalOptions(a, letterStatusMap))
-      .toSorted((a, b) => commonWordsArray.indexOf(b) - commonWordsArray.indexOf(a)));
+      .toSorted((a: string, b: string) => getTotalOptions(b, letterStatusMap) - getTotalOptions(a, letterStatusMap))
+      .toSorted((a: string, b: string) => commonWordsArray.indexOf(b) - commonWordsArray.indexOf(a)));
   }, [words, states]);
 
   useEffect(() => {
