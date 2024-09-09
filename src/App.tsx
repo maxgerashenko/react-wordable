@@ -15,8 +15,11 @@ import { LETTERS_COUNT } from './utils/consts.ts';
 function App() {
   // console.clear();
   const { activeIndex } = useContext(ActiveIndexContext);
-  const { words, states, refreshStates } = useContext(WordsStatesContext);
-  const { filterByStatus, wordsDataArray, updateWordsList, commonWordsArray } = useContext(WordListContext);
+  const { words, states, refreshStates, greenLettersMapIndex } = useContext(WordsStatesContext);
+  const { filterByStatus,
+    wordsDataArray,
+    updateWordsList,
+    commonWordsArray } = useContext(WordListContext);
   const letterStatusMap = useContext(LetterStatusContext);
 
   const getFiltered = (words: string[][]) => words
@@ -35,9 +38,11 @@ function App() {
 
   const updateFiltered = useCallback(() => {
     updateWordsList(getFiltered(words)
-      .toSorted((a: string, b: string) => getTotalOptions(b, letterStatusMap) - getTotalOptions(a, letterStatusMap))
-      .toSorted((a: string, b: string) => commonWordsArray.indexOf(b) - commonWordsArray.indexOf(a)));
-  }, [words, states]);
+      .toSorted((a: string, b: string) =>
+        getTotalOptions(b, letterStatusMap) - getTotalOptions(a, letterStatusMap))
+      .toSorted((a: string, b: string) =>
+        commonWordsArray.indexOf(b) - commonWordsArray.indexOf(a)));
+  }, [words, states, greenLettersMapIndex]);
 
   useEffect(() => {
     focusEl(activeIndex);
@@ -48,8 +53,8 @@ function App() {
     focusEl(activeIndex + 1);
 
     if (words[0][LETTERS_COUNT - 1] == '') return;
-    updateFiltered();
     refreshStates();
+    updateFiltered();
   }, [words]);
 
   useEffect(() => {

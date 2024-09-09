@@ -15,6 +15,7 @@ export const WordsStatesContext = createContext<{
     setStates: Dispatch<SetStateAction<number[][]>>,
     updateStates: (wIndex: number, lIndex: number, newState: number) => Dispatch<SetStateAction<number[][]>>,
     refreshStates: () => void,
+    greenLettersMapIndex: { [key: string]: number },
 }>({
     words: [[]], setWords: () => { },
     states: [[]], setStates: () => { },
@@ -23,31 +24,38 @@ export const WordsStatesContext = createContext<{
 export function WordsStatesProvider({ children }: { children: ReactNode }) {
     const [words, setWords] = useState<string[][]>(getMatrix(''));
     const [states, setStates] = useState<LETTER_STATES[][]>(getMatrix(0));
+    const [greenLettersMapIndex, setGreenLettersMapIndex] = useState({});
 
     const refreshStates = useCallback(() => {
-        const greenLettersMapIndex: { [key: string]: number } = {};
+        const greenLettersMapIndexLocal: { [key: string]: number } = {};
         for (let wI = 0; wI < states.length; wI++)
             for (let lI = 0; lI < states[wI].length; lI++) {
                 const letter = words[wI][lI];
                 const state = states[wI][lI];
 
                 if (state === LETTER_STATES.GREEN &&
-                    greenLettersMapIndex[letter] == null) {
-                    greenLettersMapIndex[letter] = getGlobalIndex(wI, lI);
+                    greenLettersMapIndexLocal[letter] == null) {
+                    greenLettersMapIndexLocal[letter] = getGlobalIndex(wI, lI);
                 }
             }
+        console.log(greenLettersMapIndexLocal, '+++++');
 
-        setStates(deepCopy(states).map(
+        const newStates = deepCopy(states).map(
             (row: LETTER_STATES[], wI: number) => row.map(
                 (state: LETTER_STATES, lI: number) => {
                     let letter = words[wI][lI] as string;
-                    if (!(letter in greenLettersMapIndex) ||
-                        getGlobalIndex(wI, lI) <= greenLettersMapIndex[letter] ||
-                        lI !== getLocalIndex(greenLettersMapIndex[letter])[1]
-                    ) return state;
-                    return LETTER_STATES.GREEN;
-                })));
-    }, [states, words])
+                    return (letter === '')
+                        || (!(letter in greenLettersMapIndexLocal)
+                        || getGlobalIndex(wI, lI) <= greenLettersMapIndexLocal[letter]
+                        || lI !== getLocalIndex(greenLettersMapIndexLocal[letter])[1])
+                            ? state
+                            : LETTER_STATES.GREEN;
+                }))
+
+        console.log(newStates);
+        setStates(newStates);
+        setGreenLettersMapIndex(greenLettersMapIndexLocal);
+    }, [words, states, greenLettersMapIndex])
 
 
 
@@ -68,7 +76,6 @@ export function WordsStatesProvider({ children }: { children: ReactNode }) {
     //   }
     // }
 
-
     const updateStates = useCallback(
         (wIndex: number, lIndex: number, newState: number) => {
             let newStates = deepCopy(states);
@@ -86,6 +93,7 @@ export function WordsStatesProvider({ children }: { children: ReactNode }) {
                 setStates,
                 updateStates,
                 refreshStates,
+                greenLettersMapIndex,
             }}>
                 {children}
             </WordsStatesContext.Provider>

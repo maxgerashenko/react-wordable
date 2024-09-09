@@ -1,7 +1,9 @@
-import { Dispatch, ReactNode, SetStateAction, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, useCallback, useContext, useState } from "react";
 import { createContext } from "react";
 import { words as wordsData } from '../data/words.ts';
 import { common_words as commonWords } from "../data/common_words.ts";
+import { WordsStatesContext } from "./words_states_provider.tsx";
+import { LETTER_STATES } from "../utils/consts.ts";
 
 
 export const WordListContext = createContext<{
@@ -17,7 +19,7 @@ export const WordListContext = createContext<{
     commonWordsArray: string[],
 }>({
     wordsList: [],
-    updateWordsList: () => {},
+    updateWordsList: () => { },
     filterByStatus: () => [],
     wordsDataArray: [],
     commonWordsArray: [],
@@ -27,6 +29,7 @@ export function WordListProvider({ children }: { children: ReactNode }) {
     const wordsDataArray = wordsData.split('\n');
     const commonWordsArray = commonWords.split('\n');
     const [wordsList, setWordsList] = useState<string[]>(['other', ...wordsDataArray]);
+    const { greenLettersMapIndex } = useContext(WordsStatesContext);
 
     const updateWordsList = (wordsList: string[]) => {
         if (wordsList.indexOf('snail') > 0) {
@@ -36,7 +39,7 @@ export function WordListProvider({ children }: { children: ReactNode }) {
     }
 
     // FIX GREY and GREEN STATUS CONNER CASE
-    const filterByStatus = (
+    const filterByStatus = useCallback((
         wordsList: string[],
         letter: string,
         letterStatus: number,
@@ -44,17 +47,15 @@ export function WordListProvider({ children }: { children: ReactNode }) {
     ) =>
         letter.trim() === ''
             ? wordsList
-            : letterStatus === 0
+            : (letterStatus === LETTER_STATES.GREY && !(letter in greenLettersMapIndex))
                 ? wordsList.filter(
                     (word) => !word.includes(letter)
-                    // || (word.includes(letter) && word[lIndex] != letter)
                 )
-                : letterStatus === 1
+                : letterStatus === LETTER_STATES.YELLOW
                     ? wordsList.filter(
                         (word) => word.includes(letter) && word[lIndex] !== letter
                     )
-                    : // letterStatus === 2
-                    wordsList.filter((word) => word[lIndex] === letter);
+                    : wordsList.filter((word) => word[lIndex] === letter), [greenLettersMapIndex, wordsList]);
 
     return (
         <>
