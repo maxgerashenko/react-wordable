@@ -38,7 +38,6 @@ export function WordsStatesProvider({ children }: { children: ReactNode }) {
                     greenLettersMapIndexLocal[letter] = getGlobalIndex(wI, lI);
                 }
             }
-        console.log(greenLettersMapIndexLocal, '+++++');
 
         const newStates = deepCopy(states).map(
             (row: LETTER_STATES[], wI: number) => row.map(
@@ -52,7 +51,6 @@ export function WordsStatesProvider({ children }: { children: ReactNode }) {
                             : LETTER_STATES.GREEN;
                 }))
 
-        console.log(newStates);
         setStates(newStates);
         setGreenLettersMapIndex(greenLettersMapIndexLocal);
     }, [words, states, greenLettersMapIndex])
