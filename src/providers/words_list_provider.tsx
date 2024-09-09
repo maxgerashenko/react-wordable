@@ -39,7 +39,11 @@ export function WordListProvider({ children }: { children: ReactNode }) {
     }
 
     // FIX GREY and GREEN STATUS CONNER CASE
-    const filterByStatus = useCallback((
+    // OTHER
+    // SURGE
+    // MERGE
+    // ANSER SHOULD BE DIRGE
+    const filterByStatus = (
         wordsList: string[],
         letter: string,
         letterStatus: number,
@@ -48,14 +52,12 @@ export function WordListProvider({ children }: { children: ReactNode }) {
         letter.trim() === ''
             ? wordsList
             : (letterStatus === LETTER_STATES.GREY && !(letter in greenLettersMapIndex))
-                ? wordsList.filter(
-                    (word) => !word.includes(letter)
-                )
-                : letterStatus === LETTER_STATES.YELLOW
+                ? wordsList.filter((word) => !word.includes(letter))
+                : (letterStatus === LETTER_STATES.YELLOW && !(letter in greenLettersMapIndex))
                     ? wordsList.filter(
                         (word) => word.includes(letter) && word[lIndex] !== letter
                     )
-                    : wordsList.filter((word) => word[lIndex] === letter), [greenLettersMapIndex, wordsList]);
+                    : wordsList.filter((word) => word[lIndex] === letter);
 
     return (
         <>
