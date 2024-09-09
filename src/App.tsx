@@ -16,7 +16,7 @@ import { LETTERS_COUNT } from './utils/consts.ts';
 function App() {
   // console.clear();
   const { activeIndex } = useContext(ActiveIndexContext);
-  const { words, states } = useContext(WordsStatesContext);
+  const { words, states, refreshStates } = useContext(WordsStatesContext);
   const { filterByStatus, wordsDataArray, updateWordsList, commonWordsArray } = useContext(WordListContext);
   const letterStatusMap = useContext(LetterStatusContext);
 
@@ -50,6 +50,7 @@ function App() {
 
     if (words[0][LETTERS_COUNT - 1] == '') return;
     updateFiltered();
+    refreshStates();
   }, [words]);
 
   useEffect(() => {
