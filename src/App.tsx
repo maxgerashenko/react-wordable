@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState, useCallback, useEffect, useContext } from 'react';
+import { useCallback, useEffect, useContext } from 'react';
 import './App.css';
 
 import { getLocalIndex, focusEl, getTotalOptions } from './utils/utils.ts';
