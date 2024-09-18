@@ -10,7 +10,7 @@ import { LETTERS_COUNT, STATES_COUNT } from "../utils/consts";
 const isWordEmtpy = (word: string[]) => word[0] == '';
 
 export default function WordsContainer() {
-    const { states, setStates, words, setWords } = useContext(WordsStatesContext);
+    const { states, updateStates, words, setWords } = useContext(WordsStatesContext);
     const { wordsList } = useContext(WordListContext);
     const { setActiveIndex } = useContext(ActiveIndexContext);
 
@@ -36,7 +36,7 @@ export default function WordsContainer() {
     const handleLetterDoubleClick = useCallback((wIndex: number, lIndex: number) => {
         const currentState = states[wIndex][lIndex];
         const newState = (currentState + 1) % STATES_COUNT;
-        updateState(wIndex, lIndex, newState);
+        updateStates(wIndex, lIndex, newState);
     }, [states]);
 
     // const updateState =
