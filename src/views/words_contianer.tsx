@@ -9,6 +9,7 @@ import { LETTERS_COUNT, STATES_COUNT } from "../utils/consts";
 
 const isWordEmtpy = (word: string[]) => word[0] == '';
 
+
 export default function WordsContainer() {
     const { states, updateStates, words, setWords } = useContext(WordsStatesContext);
     const { wordsList } = useContext(WordListContext);
